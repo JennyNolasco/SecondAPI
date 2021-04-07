@@ -35,3 +35,5 @@ const looping = async _ => {
 
 looping()
 })()
+
+//IIFE – Immediately-Invoked Function Expression.
