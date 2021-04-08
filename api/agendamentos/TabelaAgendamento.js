@@ -1,3 +1,4 @@
+const { removeAllListeners } = require('nodemon');
 const modeloAgendamento = require('./modelTabelaAgendamento');
 
 module.exports = {
@@ -9,5 +10,17 @@ module.exports = {
 
     async adicionar(agendamento) {
         return await modeloAgendamento.create(agendamento);
+    },
+
+    async buscarPorPK(id) {
+        return await modeloAgendamento.findByPk(id);
+    },
+
+    async remover(id) {
+        return await modeloAgendamento.destroy({
+            where: {
+                id: id
+            }
+        });
     }
 }
