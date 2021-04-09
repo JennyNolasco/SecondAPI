@@ -33,9 +33,23 @@ class Agendamento {
         this.data_criação = result.data_criacao;
         this.data_atualizacao = result.data_atualizacao;
     }
-
     async remover() {
         await TabelaAgendamento.remover(this.id)
+    }
+
+    async atualizar() {
+        await TabelaAgendamento.buscarPorPK(this.id);
+        const camposAtualizaveis = ['nome_cliente', 'nome_servico', 'status', 'data_agendamento']
+        const dadosAtualizar = {}
+
+        camposAtualizaveis.forEach((campo) => {
+            const valor = this[campo];
+            if(typeof valor === 'string' && valor.length > 0) {
+                dadosAtualizar[campo] = valor
+            }
+        });
+
+        await TabelaAgendamento.atualizar(this.id, dadosAtualizar);
     }
 }
 module.exports = Agendamento;

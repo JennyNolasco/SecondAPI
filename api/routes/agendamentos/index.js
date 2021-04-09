@@ -27,6 +27,14 @@ router.get('/agendamentos/:idAgendamento', async (req, resp) => {
     }
 });
 
+router.put('agendamentos/:idAgendamento', async (req, resp) => {
+    const id = req.params.idAgendamento;
+    const dadosBody = req.body;
+    const dados = Object.assign({}, dadosBody, {id: id})
+    const agendamento = new Agendamento(dados);
+    await agendamento.atualizar()
+});
+
 router.delete('/agendamentos/:idAgendamento', async (req, resp) => {
     try {
         const id = req.params.idAgendamento;
