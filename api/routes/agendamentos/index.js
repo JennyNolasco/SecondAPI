@@ -32,9 +32,7 @@ router.delete('/agendamentos/:idAgendamento', async (req, resp) => {
         const id = req.params.idAgendamento;
         const agendamento = new Agendamento({id:id});
         await agendamento.remover();
-        resp.send(JSON.stringify({
-            mensagem:'Registro removido'
-            })
+        resp.send(JSON.stringify({mensagem:'Registro removido'})
         );
     } catch (error) {
         resp.send(JSON.stringify({
