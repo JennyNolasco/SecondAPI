@@ -1,3 +1,4 @@
+const CampoInvalido = require('../errors/CampoInvalido');
 const TabelaAgendamento = require('./TabelaAgendamento')
 
 class Agendamento {
@@ -50,6 +51,17 @@ class Agendamento {
         });
 
         await TabelaAgendamento.atualizar(this.id, dadosAtualizar);
+    }
+    
+    validar() {
+        const camposObrigatorios = ['nome_cliente', 'nome_servico', 'status', 'data_agendamento']
+
+        camposObrigatorios.forEach((campo) => {
+            const valor = this[campo];
+            if(typeof valor !== 'string' || valor.length === 0) {
+               throw new CampoInvalido(campo)
+            }
+        });
     }
 }
 module.exports = Agendamento;
