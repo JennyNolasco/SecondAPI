@@ -3,6 +3,7 @@ class DadosNaoInformados extends Error {
         super('Dados não informados');
         this.name = 'DadosNaoInformados';
         this.idError = 3;
+        this.mensagem = 'Dados não informados';
     }
 }
 

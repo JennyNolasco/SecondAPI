@@ -5,6 +5,7 @@ const FormatosValidos = require('../Serializar').FormatosValidos;
 const NaoEncontrado = require('../errors/NaoEncontrado');
 const CampoInvalido = require('../errors/CampoInvalido');
 const SerializarError = require('../Serializar').SerializarError;
+const DadosNaoInformados = require('../errors/DadosNaoInformados');
 
 module.exports = () => {
     const app = express()
@@ -26,7 +27,7 @@ module.exports = () => {
     app.use('/api', router)
     app.use((error, req, resp, next) => {
         let status = 500;
-        if(error instanceof CampoInvalido) {
+        if(error instanceof CampoInvalido || error instanceof DadosNaoInformados) {
             status = 400
         }
         if(error instanceof NaoEncontrado) {
@@ -41,7 +42,7 @@ module.exports = () => {
 
         resp.status(status).send(
             serializarError.transformar({
-                id: error.id,
+                id: error.idError,
                 mensagem: error.message
             })
         );

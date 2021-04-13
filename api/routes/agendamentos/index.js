@@ -3,7 +3,7 @@ const TabelaAgendamento = require('../../agendamentos/TabelaAgendamento');
 const Agendamento = require('../../agendamentos/Agendamento')
 const SerializadorAgendamento = require('../../Serializar').SerializarAgendamento;
 
-router.get('/agendamentos', async (req, resp) => {
+router.get('/agendamentos', async (req, resp, next) => {
     try {
         const results = await TabelaAgendamento.listar();
         const serializador = new SerializadorAgendamento(
@@ -13,11 +13,11 @@ router.get('/agendamentos', async (req, resp) => {
         agendamentos = serializador.transformar(results)
         resp.status(200).send(agendamentos);
     } catch (error) {
-        resp.send(error)
+        next(error)
     }
 });
 
-router.get('/agendamentos/:idAgendamento', async (req, resp) => {
+router.get('/agendamentos/:idAgendamento', async (req, resp, next) => {
     try {
         const id = req.params.idAgendamento;
         const agendamento = new Agendamento({id:id});
@@ -28,13 +28,11 @@ router.get('/agendamentos/:idAgendamento', async (req, resp) => {
         );
         resp.status(200).send(serializador.transformar(agendamento));
     } catch (error) {
-        resp.send(JSON.stringify({
-            mensagem: error.message   
-        }));
+        next(error)
     }
 });
 
-router.post('/agendamentos', async (req, resp) => {
+router.post('/agendamentos', async (req, resp, next) => {
     try {
         const reqAgendamento = req.body;
         const agendamento = new Agendamento(reqAgendamento);
@@ -45,12 +43,12 @@ router.post('/agendamentos', async (req, resp) => {
         );
         resp.status(201).send(serializador.transformar(agendamento));
     } catch (error) {
-        resp.send(error)
+        next(error)
     }
     
 });
 
-router.put('agendamentos/:idAgendamento', async (req, resp) => {
+router.put('/agendamentos/:idAgendamento', async (req, resp, next) => {
     try{
         const id = req.params.idAgendamento;
         const dadosBody = req.body;
@@ -59,21 +57,19 @@ router.put('agendamentos/:idAgendamento', async (req, resp) => {
         await agendamento.atualizar();
         resp.status(204).send();
     } catch (error) {
-        resp.send(error)
+        next(error)
     }
 
 });
 
-router.delete('/agendamentos/:idAgendamento', async (req, resp) => {
+router.delete('/agendamentos/:idAgendamento', async (req, resp, next) => {
     try {
         const id = req.params.idAgendamento;
         const agendamento = new Agendamento({id:id});
         await agendamento.remover();
         resp.status(204).send()
     } catch (error) {
-        resp.send(JSON.stringify({
-            mensagem: error.message
-        }))
+        next(error)
     }
 });
 
