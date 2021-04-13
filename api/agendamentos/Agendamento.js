@@ -41,7 +41,6 @@ class Agendamento {
     }
 
     async atualizar() {
-        this.validar()
         await TabelaAgendamento.buscarPorPK(this.id);
         const camposAtualizaveis = ['nome_cliente', 'nome_servico', 'status', 'data_agendamento']
         const dadosAtualizar = {}

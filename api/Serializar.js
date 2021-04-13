@@ -1,18 +1,40 @@
 const FormatoInvalido = require('./errors/FormatoInvalido');
+const jsontoxml = require('jsontoxml');
 
 class Serializar {
     json(dados) {
         return JSON.stringify(dados)
     };
 
+    xml(dados) {
+        if(Array.isArray(dados)){
+            dados = dados.map((item) => {
+                return {
+                    [this.tag]: item
+                }
+            });
+            this.tag = this.tagList;
+        }
+        return jsontoxml({
+            [this.tag]:dados
+        });
+    }
+
     transformar(dados) {
-        if(this.contentType !== 'application/json') {
-            throw new FormatoInvalido(this.contentType);
+        dados = this.filtrar(dados);
+        if(this.contentType === 'application/json') {
+            return this.json(
+                dados
+            )
         }
 
-        return this.json(
-            this.filtrar(dados)
-        );
+        if(this.contentType === 'application/xml'){
+            return this.xml(
+                dados
+            )
+        }
+
+        throw new FormatoInvalido(this.contentType);
     };
 
     filtrarCampos(dados) {
@@ -46,6 +68,8 @@ class SerializarAgendamento extends Serializar {
         this.camposPermitidos = [
             'id', 'nome_cliente', 'data_agendamento'
         ].concat(camposPersonalizados || []);
+        this.tag = 'Agendamento';
+        this.tagList = 'Agendamentos';
     }
 }
 
@@ -66,5 +90,5 @@ module.exports = {
     Serializar: Serializar,
     SerializarAgendamento: SerializarAgendamento,
     SerializarError: SerializarErro,
-    FormatosValidos: ['application/json']
+    FormatosValidos: ['application/json', 'application/xml']
 }
