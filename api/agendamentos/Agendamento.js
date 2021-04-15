@@ -31,7 +31,7 @@ class Agendamento {
     async buscar() {
         const result = await TabelaAgendamento.buscarPorPK(this.id);
         if(!result) {
-            throw new NaoEncontrado()
+            throw new NaoEncontrado('Agendamento')
         }
         this.nome_servico = result.nome_servico;
         this.nome_cliente = result.nome_cliente;

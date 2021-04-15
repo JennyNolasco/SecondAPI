@@ -28,7 +28,7 @@ module.exports = () => {
     app.use(express.json())
     app.use('/api', routesAgendamento);
     app.use('/api', routesUsuario);
-    app.use('/api', routesLogin);
+    //app.use('/api', routesLogin);
     app.use((error, req, resp, next) => {
         let status = 500;
         if(error instanceof CampoInvalido || error instanceof DadosNaoInformados) {
