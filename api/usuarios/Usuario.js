@@ -4,6 +4,7 @@ const CampoQtdMinima = require('../errors/CampoQtdMinima');
 const CampoQtdMaxima = require('../errors/CampoQtdMaxima');
 const NaoEncontrado = require('../errors/NaoEncontrado');
 const DadosNaoInformados = require('../errors/DadosNaoInformados');
+const bcrypt = require('bcrypt');
 
 
 class Usuario {
@@ -19,6 +20,7 @@ class Usuario {
 
     async criar() {
         this.validar();
+        await this.adcionaSenha();
         const result = await TabelaUsuario.adicionar({
             nome: this.nome,
             email: this.email,
@@ -103,6 +105,15 @@ class Usuario {
                 throw new CampoQtdMaxima(campo)
             }
         });
+    };
+
+    async gerarHash(campo) {
+        const saltRounds = 12;
+        return await bcrypt.hash(campo, saltRounds)
+    };
+
+    async adcionaSenha() {
+        this.senhaHash = await this.gerarHash(this.senha);
     }
 }
 
