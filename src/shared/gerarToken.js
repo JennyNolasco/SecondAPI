@@ -6,9 +6,7 @@ function criarToken(usuario) {
         id: usuario.id
     };
 
-    return jwt.sign(payload, process.env.JWT_KEY);
+    return jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '10m'});
 }
 
-module.exports = {
-    criarToken: criarToken
-}
+module.exports = criarToken

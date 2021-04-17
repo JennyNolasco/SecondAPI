@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const controllerUsuario = require('../../usuarios/controllerUsuario');
+const servicoLogin = require('../../services/login');
 const passport = require('passport');
 
 router.post('/login', passport.authenticate('local', { session: false}),
-    controllerUsuario.login
+    servicoLogin.login
 );
 
 module.exports = router
