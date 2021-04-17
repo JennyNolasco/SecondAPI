@@ -1,67 +1,30 @@
 const router = require('express').Router();
-const SerializadorUsuario = require('../../shared/Serializar').SerializarUsuario;
-const TabelaUsuario = require('../../models/usuarios/TabelaUsuario');
-const Usuario = require('../../services/usuarios/Usuario');
+const servicoUsuario = require('../../services/usuarios');
+const passport = require('passport');
 
-router.get('/usuarios', async(req, resp, next) => {
-    try{
-        const results = await TabelaUsuario.listar();
-        const serializador = new SerializadorUsuario(
-            resp.getHeader('Content-Type')
-        )
-        resp.status(200).send(serializador.transformar(results));
-    } catch (error) {
-        next(error);
-    };
-});
+router.get('/usuarios',  
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.carregarTodosUsuarios
+);
 
-router.post('/usuarios', async (req, resp, next) => {
-    try {
-        const reqUsuario = req.body;
-        const usuario = new Usuario(reqUsuario);
-        await usuario.criar();
-        const serializador = new SerializadorUsuario(
-            resp.getHeader('Content-Type')
-        );
-        resp.status(201).send(serializador.transformar(usuario))
-    } catch(error) {
-        next(error);
-    };
-    
-});
+router.post('/usuarios', 
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.criarUsuario
+);
 
-router.get('/usuarios/:idUsuario', async (req, resp, next) => {
-    try {
-        const id = req.params.idUsuario;
-        const usuario = new Usuario({id:id});
-        await usuario.buscarPorId();
-        const serializador = new SerializadorUsuario(
-            resp.getHeader('Content-Type')
-        );
-        resp.status(200).send(serializador.transformar(usuario));
-    } catch(error){ 
-        next(error)
-    };
-});
+router.get('/usuarios/:idUsuario', 
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.carregarUsuario
+);
 
+router.put('/usuarios/:idUsuario',  
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.alterarUsuario
+);
 
-router.put('/usuarios/:idUsuario', async (req, resp, next) => {
-    try {
-        const id = req.params.idUsuario;
-        const dadosBody = req.body;
-        const dados = Object.assign({}, dadosBody, {id:id});
-        const usuario = new Usuario(dados);
-        await usuario.atualizar();
-        const serializador = new SerializadorUsuario(
-            resp.getHeader('Content-Type')
-        )
-        resp.status(204).send(serializador.transformar(usuario));
-    } catch(error) { 
-        next(error)
-    };
-});
-
-
-
+router.delete('/usuarios/:idUsuario',  
+    passport.authenticate('bearer', {session: false}),
+    servicoUsuario.removerUsuario
+);
 
 module.exports = router;
