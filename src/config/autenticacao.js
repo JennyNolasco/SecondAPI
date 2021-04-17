@@ -1,4 +1,4 @@
-const Usuario = require('./Usuario');
+const Usuario = require('../services/usuarios/Usuario');
 const LoginInvalido = require('../errors/LoginInvalido');
 const NaoEncontrado = require('../errors/NaoEncontrado');
 const bcrypt = require('bcrypt');

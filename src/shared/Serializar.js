@@ -1,4 +1,4 @@
-const FormatoInvalido = require('./errors/FormatoInvalido');
+const FormatoInvalido = require('../errors/FormatoInvalido');
 const jsontoxml = require('jsontoxml');
 
 class Serializar {

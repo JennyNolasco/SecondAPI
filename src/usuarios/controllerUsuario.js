@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Usuario = require('./Usuario');
+const Usuario = require('../services/usuarios/Usuario');
 const crypto = require('crypto');
 
 function criarToken(usuario) {

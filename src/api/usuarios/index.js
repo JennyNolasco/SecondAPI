@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const SerializadorUsuario = require('../../Serializar').SerializarUsuario;
-const TabelaUsuario = require('../../usuarios/TabelaUsuario');
-const Usuario = require('../../usuarios/Usuario');
+const SerializadorUsuario = require('../../shared/Serializar').SerializarUsuario;
+const TabelaUsuario = require('../../models/usuarios/TabelaUsuario');
+const Usuario = require('../../services/usuarios/Usuario');
 
 router.get('/usuarios', async(req, resp, next) => {
     try{
